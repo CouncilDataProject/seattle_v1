@@ -1,0 +1,334 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+* {
+  margin: 0;
+  padding: 0; }
+
+#app-body {
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden; }
+
+.flex {
+  display: flex; }
+
+.flex-column {
+  flex-flow: column; }
+
+.flex-row {
+  flex-flow: row; }
+
+.flex-wrap {
+  flex-wrap: wrap; }
+
+.flex-grow-true {
+  flex-grow: 1; }
+
+.flex-grow-false {
+  flex-grow: 0; }
+
+.flex-shrink-true {
+  flex-shrink: 1; }
+
+.flex-shrink-false {
+  flex-shrink: 0; }
+
+.flex-basis-auto {
+  flex-basis: auto; }
+
+.flex-basis-60px {
+  flex-basis: 60px; }
+
+.flex-basis-400px {
+  flex-basis: 400px; }
+
+.align-start {
+  align-items: flex-start; }
+
+.align-center {
+  align-items: center; }
+
+.justify-start {
+  justify-content: flex-start; }
+
+.justify-between {
+  justify-content: space-between; }
+
+.justify-center {
+  justify-content: center; }
+
+.event-card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
+  .event-card:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); }
+
+.border-1px-solid-main {
+  border: 1px solid #9E9E9E; }
+
+.border-2px-solid-main {
+  border: 2px solid #9E9E9E; }
+
+.border-bottom-1px-solid-main {
+  border-bottom: 1px solid #9E9E9E; }
+
+.border-bottom-2px-solid-darkest {
+  border-bottom: 2px solid #212121; }
+
+.border-radius-5px {
+  border-radius: 5px; }
+
+.height-60px {
+  height: 60px; }
+
+.height-140px {
+  height: 140px; }
+
+.height-140px-min {
+  height: auto;
+  min-height: 140px; }
+
+.height-300px {
+  height: 300px; }
+
+.height-fill-from-60px {
+  height: auto;
+  min-height: calc(100% - 60px); }
+
+.height-60-percent {
+  height: 60%; }
+
+.height-80-percent {
+  height: 80%; }
+
+.width-180px-min {
+  min-width: 180px; }
+
+.width-200px {
+  width: 200px; }
+
+.width-300px {
+  width: 300px; }
+
+.width-60-percent {
+  width: 60%; }
+
+.width-80-percent {
+  width: 80%; }
+
+.width-100-percent {
+  width: 100%; }
+
+.width-100vw {
+  width: 100vw; }
+
+.space-all-10px {
+  margin: 10px; }
+
+.space-all-40px {
+  margin: 40px; }
+
+.space-top-10px {
+  margin-top: 10px; }
+
+.space-top-40px {
+  margin-top: 40px; }
+
+.space-bottom-40px {
+  margin-bottom: 40px; }
+
+.space-left-10px {
+  margin-left: 10px; }
+
+.space-right-10px {
+  margin-right: 10px; }
+
+.space-right-20px {
+  margin-right: 20px; }
+
+.space-left-40px {
+  margin-left: 40px; }
+
+.space-right-40px {
+  margin-right: 40px; }
+
+.space-left-80px {
+  margin-left: 80px; }
+
+.space-right-80px {
+  margin-right: 80px; }
+
+.remove-item-decoration {
+  list-style-type: none; }
+
+.bold-text {
+  font-weight: bold; }
+
+.accent-text {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  line-height: 38px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased; }
+
+.apply-link-standards {
+  text-decoration: none; }
+
+.section-label {
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  line-height: 40px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased; }
+
+.header-minor-text {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  line-height: 20px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased; }
+
+.sub-text {
+  font-family: "Open Sans", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0px;
+  line-height: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased; }
+
+.link-lightest-to-main {
+  color: #FFFFFF; }
+  .link-lightest-to-main:visited {
+    color: #FFFFFF; }
+  .link-lightest-to-main:hover {
+    color: #9E9E9E; }
+
+.transition-all-150 {
+  -o-transition: all 150ms ease-in-out;
+  -webkit-transition: all 150ms ease-in-out;
+  -moz-transition: all 150ms ease-in-out;
+  -ms-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out; }
+
+.color-text-lightest {
+  color: #FFFFFF; }
+
+.color-text-lightest-background {
+  background-color: #FFFFFF; }
+
+.color-text-lighter {
+  color: #BDBDBD; }
+
+.color-text-lighter-background {
+  background-color: #BDBDBD; }
+
+.color-text-main {
+  color: #9E9E9E; }
+
+.color-text-main-background {
+  background-color: #9E9E9E; }
+
+.color-text-darker {
+  color: #757575; }
+
+.color-text-darker-background {
+  background-color: #757575; }
+
+.color-text-darkest {
+  color: #212121; }
+
+.color-text-darkest-background {
+  background-color: #212121; }
+
+.color-blue-lightest {
+  color: #9696FE; }
+
+.color-blue-lightest-background {
+  background-color: #9696FE; }
+
+.color-blue-lighter {
+  color: #6D6DFF; }
+
+.color-blue-lighter-background {
+  background-color: #6D6DFF; }
+
+.color-blue-main {
+  color: #4747FF; }
+
+.color-blue-main-background {
+  background-color: #4747FF; }
+
+.color-blue-darker {
+  color: #2121FF; }
+
+.color-blue-darker-background {
+  background-color: #2121FF; }
+
+.color-blue-darkest {
+  color: #0202FB; }
+
+.color-blue-darkest-background {
+  background-color: #0202FB; }
+
+.color-orange-lightest {
+  color: #FFCA84; }
+
+.color-orange-lightest-background {
+  background-color: #FFCA84; }
+
+.color-orange-lighter {
+  color: #FFB553; }
+
+.color-orange-lighter-background {
+  background-color: #FFB553; }
+
+.color-orange-main {
+  color: #FFA327; }
+
+.color-orange-main-background {
+  background-color: #FFA327; }
+
+.color-orange-darker {
+  color: #FF9200; }
+
+.color-orange-darker-background {
+  background-color: #FF9200; }
+
+.color-orange-darkest {
+  color: #FF9200; }
+
+.color-orange-darkest-background {
+  background-color: #FF9200; }
+
+.color-mint-lightest {
+  color: #83FEC9; }
+
+.color-mint-lightest-background {
+  background-color: #83FEC9; }
+
+.color-mint-lighter {
+  color: #53FFB5; }
+
+.color-mint-lighter-background {
+  background-color: #53FFB5; }
+
+.color-mint-main {
+  color: #27FFA2; }
+
+.color-mint-main-background {
+  background-color: #27FFA2; }
+
+.color-mint-darker {
+  color: #00FF92; }
+
+.color-mint-darker-background {
+  background-color: #00FF92; }
+
+.color-mint-darkest {
+  color: #00FB8F; }
+
+.color-mint-darkest-background {
+  background-color: #00FB8F; }
+
+/*# sourceMappingURL=master.css.map */

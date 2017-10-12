@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Seattle - CDP</title>
+    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+    <link href="style/master.css" type="text/css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous" charset="utf-8"></script>
+    <script src="http://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-database.js"></script>
+  </head>
+  <body>
+    <div id="app-body">
+      <div id="app-header" class="height-60px width-100vw color-blue-main-background">
+
+      </div>
+      <div id="app-content" class="flex flew-row flex-wrap align-start justify-center height-fill-from-60px width-100vw space-top-40px space-bottom-40px">
+        <div class="containing-box width-60-percent">
+          <h3 class="section-label bold-text color-text-darkest space-bottom-40px border-bottom-2px-solid-darkest">Recent Meetings</h3>
+          <div id="recent-content" class="flex flex-row flex-wrap align-center justify-start width-100-percent">
+
+          </div>
+        </div>
+      </div>
+      <div id="app-footer" class="flex flex-row flex-wrap align-center justify-center width-100vw color-blue-main-background">
+        <div class="width-180px-min space-top-40px space-bottom-40px space-left-80px space-right-80px">
+          <ul class="remove-item-decoration">
+            <li class="accent-text bold-text color-text-lightest">ABOUT</li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="#">The&nbsp;Project</a></li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="#">The&nbsp;Team</a></li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="#">Other&nbsp;Work</a></li>
+          </ul>
+        </div>
+        <div class="width-180px-min space-top-40px space-bottom-40px space-left-80px space-right-80px">
+          <ul class="remove-item-decoration">
+            <li class="accent-text bold-text color-text-lightest">SEATTLE</li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="http://www.seattle.gov/">City&nbsp;of&nbsp;Seattle</a></li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="https://data.seattle.gov/">Seattle&nbsp;Open&nbsp;Data</a></li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="http://www.seattlechannel.org/CityCouncil">Seattle&nbsp;Channel</a></li>
+          </ul>
+        </div>
+        <div class="width-180px-min space-top-40px space-bottom-40px space-left-80px space-right-80px">
+          <ul class="remove-item-decoration">
+            <li class="accent-text bold-text color-text-lightest">DEVELOPERS</li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="https://github.com/CouncilDataProject">Council&nbsp;Data&nbsp;Project</a></li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="https://github.com/CouncilDataProject/seattle_cdp">Seattle&nbsp;Specific</a></li>
+            <li><a class="accent-text apply-link-standards link-lightest-to-main color-text-lightest transition-all-150" href="https://github.com/CouncilDataProject/transcription_runner">Transcription&nbsp;Runner</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="js/loadData.js" charset="utf-8"></script>
+  <script src="js/createEventObjects.js" charset="utf-8"></script>
+</html>
