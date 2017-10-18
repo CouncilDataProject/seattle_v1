@@ -3,26 +3,36 @@
   <head>
     <meta charset="utf-8">
     <title>Seattle - CDP</title>
-    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+
+    <!-- styles -->
+    <link href='style/font-awesome.min.css' type='text/css' rel='stylesheet'>
     <link href="style/master.css" type="text/css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous" charset="utf-8"></script>
-    <script src="http://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-database.js"></script>
+
+    <!-- imported -->
+    <script src="js/imported/jquery-3.2.1.js" charset="utf-8"></script>
+    <script src="js/imported/vue.min.js" charset="utf-8"></script>
+    <script src="js/imported/vue-router.js" charset="utf-8"></script>
+    <script src="js/imported/alasql.min.js" charset="utf-8"></script>
+    <script src="js/imported/firebase-app.js" charset="utf-8"></script>
+    <script src="js/imported/firebase-database.js" charset="utf-8"></script>
+
+    <!--  my scripts -->
+    <script src="js/my/loadData.js" charset="utf-8"></script>
+    <script src="js/my/createEventObjects.js" charset="utf-8"></script>
+    <script src="js/my/createEventPage.js" charset="utf-8"></script>
+    <script src="js/my/createSearchPage.js" charset="utf-8"></script>
   </head>
   <body>
     <div id="app-body">
       <div id="app-header" class="height-60px width-100vw color-blue-main-background">
 
       </div>
-      <div id="app-content" class="flex flew-row flex-wrap align-start justify-center height-fill-from-60px width-100vw space-top-40px space-bottom-40px">
-        <div class="containing-box width-60-percent">
-          <h3 class="section-label bold-text color-text-darkest space-bottom-40px border-bottom-2px-solid-darkest">Recent Meetings</h3>
-          <div id="recent-content" class="flex flex-row flex-wrap align-center justify-start width-100-percent">
 
-          </div>
-        </div>
-      </div>
+      <!-- route outlet -->
+      <!-- component matched by the route will render here -->
+      <router-view></router-view>
+
+
       <div id="app-footer" class="flex flex-row flex-wrap align-center justify-center width-100vw color-blue-main-background">
         <div class="width-180px-min space-top-40px space-bottom-40px space-left-80px space-right-80px">
           <ul class="remove-item-decoration">
@@ -51,6 +61,5 @@
       </div>
     </div>
   </body>
-  <script src="js/loadData.js" charset="utf-8"></script>
-  <script src="js/createEventObjects.js" charset="utf-8"></script>
+  <script src="js/my/app.js" charset="utf-8"></script>
 </html>

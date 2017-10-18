@@ -96,6 +96,13 @@ $color-mint-darkest: #00FB8F
 
   &:hover
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3)
+    cursor: pointer
+
+
+// CONTAINER STYLING
+
+.border-none
+  border: none
 
 .border-1px-solid-main
   border: 1px solid $color-text-main
@@ -106,11 +113,17 @@ $color-mint-darkest: #00FB8F
 .border-bottom-1px-solid-main
   border-bottom: 1px solid $color-text-main
 
+.border-bottom-1px-solid-darkest
+  border-bottom: 1px solid $color-text-darkest
+
 .border-bottom-2px-solid-darkest
   border-bottom: 2px solid $color-text-darkest
 
 .border-radius-5px
   border-radius: 5px
+
+.height-40px
+  height: 40px
 
 .height-60px
   height: 60px
@@ -121,6 +134,10 @@ $color-mint-darkest: #00FB8F
 .height-140px-min
   height: auto
   min-height: 140px
+
+.height-160px-min
+  height: auto
+  min-height: 160px
 
 .height-300px
   height: 300px
@@ -156,6 +173,13 @@ $color-mint-darkest: #00FB8F
 .width-100vw
   width: 100vw
 
+.width-fill-from-20px
+  width: auto
+  min-width: calc(100% - 20px)
+
+.padding-left-20px
+  padding-left: 20px
+
 .space-all-10px
   margin: 10px
 
@@ -167,6 +191,9 @@ $color-mint-darkest: #00FB8F
 
 .space-top-40px
   margin-top: 40px
+
+.space-bottom-20px
+  margin-bottom: 20px
 
 .space-bottom-40px
   margin-bottom: 40px
@@ -232,6 +259,14 @@ $color-mint-darkest: #00FB8F
   font-size: 10px
   letter-spacing: 0px
   line-height: 16px
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased
+
+.gapped-text
+  font-family: 'Open Sans', sans-serif
+  font-size: 14px
+  letter-spacing: 0px
+  line-height: 38px
   text-rendering: optimizeLegibility
   -webkit-font-smoothing: antialiased
 

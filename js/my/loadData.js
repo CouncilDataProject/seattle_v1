@@ -12,9 +12,9 @@ const firebaseApp = firebase.initializeApp(config);
 const firebaseDB = firebase.database();
 
 // Get Data Functions
-function getDataFromDB(db, path, cleaningFunction, devPrints) {
+function getDataFromDB(db, path, cleaningFunction, createItemsFunction, createItemsParamsObject, storeData = true, devPrints = false) {
   let storageLabel = path;
-  let timeLabel = path + 'PreviousStoreTime';
+  let timeLabel = path + '-PreviousStoreTime';
 
   if (devPrints) { console.log('Getting:', storageLabel); }
 
@@ -26,16 +26,22 @@ function getDataFromDB(db, path, cleaningFunction, devPrints) {
 
       if (devPrints) { console.log('\tPulled data'); }
 
-      return storeDataPull(storageLabel, timeLabel, snapshot.val(), cleaningFunction, devPrints) || 'error in retrieving event list data from database';
+      if (storeData) {
 
+        let data = storeDataPull(storageLabel, timeLabel, snapshot.val(), cleaningFunction, devPrints) || 'error in retrieving event list data from database';
+        return createItemsFunction(data, createItemsParamsObject, devPrints);
+
+      } else {
+
+        return snapshot.val();
+      }
     });
-
   } else {
 
     if (devPrints) { console.log('\tPrevious store time was found and falls in time boundary'); }
 
-    return getLocalData(storageLabel, devPrints);
-
+    let data = getLocalData(storageLabel, devPrints);
+    return createItemsFunction(data, createItemsParamsObject, devPrints);
   }
 };
 
@@ -74,6 +80,14 @@ function addMillisecondDateToData(data) {
   return data;
 };
 
+function addKeyAsAttributeToAll(data) {
+  for (let key in data) {
+    data[key]['naming'] = key;
+  }
+
+  return data;
+};
+
 function convertJSONtoArray(data) {
   let arr = [];
 
@@ -88,14 +102,29 @@ function orderListByParam(data, orderedBy, ascDesc) {
   return alasql(('SELECT * FROM ? ORDER BY ' + orderedBy + ' ' + ascDesc), [data]);
 };
 
+function orderListByParamOnlyTopN(data, orderedBy, ascDesc, topN) {
+  return alasql(('SELECT TOP ' + topN + ' * FROM ? ORDER BY ' + orderedBy + ' ' + ascDesc), [data]);
+};
+
+function getTopNFromData(data, n) {
+  return alasql(('SELECT TOP ' + n + ' * FROM ?'), [data]);
+};
+
 function orderListByParamWithFilter(data, filterLabel, filter, targetValue, orderedBy, ascDesc) {
   return alasql(('SELECT * FROM ? WHERE ' + filterLabel + ' ' + filter + ' ' + targetValue + 'ORDER BY ' + orderedBy + ' ' + ascDesc), [data]);
 };
 
 function cleanEventsInfoJSON(data) {
-  data = addMillisecondDateToData(data)
-  data = convertJSONtoArray(data)
-  data = orderListByParam(data, 'msDate', 'DESC')
+  data = addMillisecondDateToData(data);
+  data = convertJSONtoArray(data);
+  data = orderListByParam(data, 'msDate', 'DESC');
+
+  return data;
+};
+
+function cleanSearchJSON(data) {
+  data = orderListByParam(data, 'relevancy', 'DESC');
+  // data = data.sort(function(a, b) { return a.relevancy - b.relevancy });
 
   return data;
 };
