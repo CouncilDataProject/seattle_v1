@@ -1,88 +1,129 @@
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyC5KSbdwIRpNHQ1Bwfalu9qH_gxHrQ7XdU",
-  authDomain: "cdp-001.firebaseapp.com",
-  databaseURL: "https://cdp-001.firebaseio.com",
-  projectId: "cdp-001",
-  storageBucket: "cdp-001.appspot.com",
-  messagingSenderId: "274887179994"
+    apiKey: "AIzaSyCZkaEzqcssHT6DW08-rjeziGXvwV_1NJA",
+    authDomain: "cdp-sea.firebaseapp.com",
+    databaseURL: "https://cdp-sea.firebaseio.com",
+    projectId: "cdp-sea",
+    storageBucket: "cdp-sea.appspot.com",
+    messagingSenderId: "14332015313"
 };
 
 const firebaseApp = firebase.initializeApp(config);
 const firebaseDB = firebase.database();
 
-// Get Data Functions
-function getDataFromDB(db, path, cleaningFunction, createItemsFunction, createItemsParamsObject, storeData = true, devPrints = false) {
-  let storageLabel = path;
-  let timeLabel = path + '-PreviousStoreTime';
+// levenshtein distance from https://github.com/gustf/js-levenshtein/blob/master/index.js
+function _min(d0, d1, d2, bx, ay) {
+  return d0 < d1 || d2 < d1
+      ? d0 > d2
+          ? d2 + 1
+          : d0 + 1
+      : bx === ay
+          ? d1
+          : d1 + 1;
+};
 
-  if (devPrints) { console.log('Getting:', storageLabel); }
-
-  if ((typeof(localStorage.getItem(timeLabel)) == null) || (Date.now() - localStorage.getItem(timeLabel) > 86400000)) {
-
-    if (devPrints) { console.log('\tPrevious store time not found or falls out of time boundary'); }
-
-    return db.ref(path).once('value').then(function(snapshot) {
-
-      if (devPrints) { console.log('\tPulled data'); }
-
-      if (storeData) {
-
-        let data = storeDataPull(storageLabel, timeLabel, snapshot.val(), cleaningFunction, devPrints) || 'error in retrieving event list data from database';
-        return createItemsFunction(data, createItemsParamsObject, devPrints);
-
-      } else {
-
-        return snapshot.val();
-      }
-    });
-  } else {
-
-    if (devPrints) { console.log('\tPrevious store time was found and falls in time boundary'); }
-
-    let data = getLocalData(storageLabel, devPrints);
-    return createItemsFunction(data, createItemsParamsObject, devPrints);
+function leven_distance(a, b) {
+  if (a === b) {
+    return 0;
   }
+
+  if (a.length > b.length) {
+    var tmp = a;
+    a = b;
+    b = tmp;
+  }
+
+  var la = a.length;
+  var lb = b.length;
+
+  while (la > 0 && (a.charCodeAt(la - 1) === b.charCodeAt(lb - 1))) {
+    la--;
+    lb--;
+  }
+
+  var offset = 0;
+
+  while (offset < la && (a.charCodeAt(offset) === b.charCodeAt(offset))) {
+    offset++;
+  }
+
+  la -= offset;
+  lb -= offset;
+
+  if (la === 0 || lb === 1) {
+    return lb;
+  }
+
+  var x = 0;
+  var y;
+  var d0;
+  var d1;
+  var d2;
+  var d3;
+  var dd;
+  var dy;
+  var ay;
+  var bx0;
+  var bx1;
+  var bx2;
+  var bx3;
+
+  var vector = [];
+
+  for (y = 0; y < la; y++) {
+    vector.push(y + 1);
+    vector.push(a.charCodeAt(offset + y));
+  }
+
+  for (; (x + 3) < lb;) {
+    bx0 = b.charCodeAt(offset + (d0 = x));
+    bx1 = b.charCodeAt(offset + (d1 = x + 1));
+    bx2 = b.charCodeAt(offset + (d2 = x + 2));
+    bx3 = b.charCodeAt(offset + (d3 = x + 3));
+    dd = (x += 4);
+    for (y = 0; y < vector.length; y += 2) {
+      dy = vector[y];
+      ay = vector[y + 1];
+      d0 = _min(dy, d0, d1, bx0, ay);
+      d1 = _min(d0, d1, d2, bx1, ay);
+      d2 = _min(d1, d2, d3, bx2, ay);
+      dd = _min(d2, d3, dd, bx3, ay);
+      vector[y] = dd;
+      d3 = d2;
+      d2 = d1;
+      d1 = d0;
+      d0 = dy;
+    }
+  }
+  for (; x < lb;) {
+    bx0 = b.charCodeAt(offset + (d0 = x));
+    dd = ++x;
+    for (y = 0; y < vector.length; y += 2) {
+      dy = vector[y];
+      vector[y] = dd = dy < d0 || dd < d0
+          ? dy > dd ? dd + 1 : dy + 1
+          : bx0 === vector[y + 1]
+              ? d0
+              : d0 + 1;
+      d0 = dy;
+    }
+  }
+
+  return dd;
 };
 
-function getLocalData(storageLabel, devPrints) {
-  let data = JSON.parse(localStorage.getItem(storageLabel))
-
-  if (devPrints) { console.log('\tLocal:', data); }
-
-  return data;
-};
-
-// Store Data Functions
-function storeDataPull(storageLabel, timeLabel, data, cleaningFunction, devPrints) {
-  if (devPrints) { console.log('\tStoring ' + storageLabel + ' and time locally'); }
-
-  data = cleaningFunction(data);
-
-  localStorage.setItem(storageLabel, JSON.stringify(data));
-  localStorage.setItem(timeLabel, Date.now());
-
-  if (devPrints) { console.log('\tStored:', data); }
-
-  return data;
+function checkPathExists(pathHead, pathKey, to, from, next) {
+  if (firebaseDB.ref(pathHead + pathKey + "/").once("value").then(function(snapshot) { return snapshot.exists(); })) {
+    next();
+  } else {
+    next(false);
+  }
 };
 
 // Cleaning Functions
-function createMillisecondDate(stringDate) {
-  return new Date(stringDate).getTime();
-};
-
-function addMillisecondDateToData(data) {
+function addMillisecondDateToData(data, label) {
   for (let key in data) {
-    data[key]['msDate'] = createMillisecondDate(data[key].datetime)
-  }
-
-  return data;
-};
-
-function addKeyAsAttributeToAll(data) {
-  for (let key in data) {
-    data[key]['naming'] = key;
+    data[key][label] = new Date(data[key].datetime).getTime();
   }
 
   return data;
@@ -98,36 +139,36 @@ function convertJSONtoArray(data) {
   return arr;
 };
 
+function filterElementByKeyUndefined(data, key) {
+  let arr = [];
+
+  for (let item in data) {
+    if (data[item][key] != undefined) {
+      arr.push(data[item]);
+    }
+  }
+
+  return arr;
+};
+
+function combineJSONWithArrayOnKey(json, arr, matchAttr) {
+  for (let key in arr) {
+    let matchKey = arr[key][matchAttr];
+
+    if (json[matchKey] != undefined) {
+      for (let attr in arr[key]) {
+        json[matchKey][attr] = arr[key][attr];
+      }
+    }
+  }
+
+  return json;
+};
+
 function orderListByParam(data, orderedBy, ascDesc) {
-  return alasql(('SELECT * FROM ? ORDER BY ' + orderedBy + ' ' + ascDesc), [data]);
+  return alasql(("SELECT * FROM ? ORDER BY " + orderedBy + " " + ascDesc), [data]);
 };
 
-function orderListByParamOnlyTopN(data, orderedBy, ascDesc, topN) {
-  return alasql(('SELECT TOP ' + topN + ' * FROM ? ORDER BY ' + orderedBy + ' ' + ascDesc), [data]);
+function listWhereByParam(data, key, qualifier, whereBy) {
+  return alasql(("SELECT * FROM ? WHERE " + key + qualifier + "'" + whereBy + "'"), [data]);
 };
-
-function getTopNFromData(data, n) {
-  return alasql(('SELECT TOP ' + n + ' * FROM ?'), [data]);
-};
-
-function orderListByParamWithFilter(data, filterLabel, filter, targetValue, orderedBy, ascDesc) {
-  return alasql(('SELECT * FROM ? WHERE ' + filterLabel + ' ' + filter + ' ' + targetValue + 'ORDER BY ' + orderedBy + ' ' + ascDesc), [data]);
-};
-
-function cleanEventsInfoJSON(data) {
-  data = addMillisecondDateToData(data);
-  data = convertJSONtoArray(data);
-  data = orderListByParam(data, 'msDate', 'DESC');
-
-  return data;
-};
-
-function cleanSearchJSON(data) {
-  data = orderListByParam(data, 'relevancy', 'DESC');
-  // data = data.sort(function(a, b) { return a.relevancy - b.relevancy });
-
-  return data;
-};
-
-// Testing
-// console.log(getData(firebaseDB, '/events/', cleanEventsInfoJSON, true));
