@@ -281,6 +281,7 @@ Vue.component("event-details", {
     },
     checkTranscriptChanges: function() {
       let editedTranscript = $('#transcript-editor').text();
+
       if (editedTranscript === this.viewVersion.full_text) {
         return "No changes were made...";
       // } else if ((leven_distance(editedTranscript, this.viewVersion.full_text) / this.viewVersion.full_text.length) > 0.2) {
@@ -402,6 +403,7 @@ const SearchComponent = {
       eventsAreLoaded: false,
       tfidfIsLoaded: false,
       selectedBody: "All",
+      selectedDates: "All",
       selectedViewN: 10
     };
   },
@@ -483,11 +485,37 @@ const SearchComponent = {
 
       eventsArr = combineJSONWithArrayOnKey(eventsArr, this.searchResults, "naming");
 
+      eventsArr = addMillisecondDateToData(eventsArr, "msDate");
       eventsArr = convertJSONtoArray(eventsArr);
       eventsArr = filterElementByKeyUndefined(eventsArr, "relevancy");
 
       if (this.selectedBody != "All") {
         eventsArr = listWhereByParam(eventsArr, "body", "=", this.selectedBody);
+      }
+
+      if (this.selectedDates != "All") {
+        let tempDate = new Date();
+
+        if (this.selectedDates == "One Week") {
+          tempDate.setDate(tempDate.getDate() - 7);
+        } else if (this.selectedDates == "One Month") {
+          tempDate.setMonth(tempDate.getMonth() - 1);
+        } else if (this.selectedDates == "Three Months") {
+          tempDate.setMonth(tempDate.getMonth() - 3);
+        } else {
+          tempDate.setYear(tempDate.getFullYear() - 1);
+        }
+
+        let msDate = tempDate.valueOf();
+        let timeFiltered = [];
+
+        for (let key in eventsArr) {
+          if (parseInt(eventsArr[key]["msDate"]) >= msDate) {
+            timeFiltered.push(eventsArr[key]);
+          }
+        }
+
+        eventsArr = timeFiltered;
       }
 
       eventsArr = orderListByParam(eventsArr, "relevancy", "DESC");
@@ -533,6 +561,17 @@ const SearchComponent = {
             <h4 class="gapped-text display-inline-block">Allowed Bodies:</h4>
             <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedBody">
               <option v-for="body in dropdownBodies">{{body}}</option>
+            </select>
+          </div>
+
+          <div class="space-left-20px dropdown-container">
+            <h4 class="gapped-text display-inline-block">Allowed Dates:</h4>
+            <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedDates">
+              <option>All</option>
+              <option>One Week</option>
+              <option>One Month</option>
+              <option>Three Months</option>
+              <option>One Year</option>
             </select>
           </div>
 
