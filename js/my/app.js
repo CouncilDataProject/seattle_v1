@@ -10,7 +10,7 @@ const MainComponent = {
     return {
       eventsAreLoaded: false,
       selectedBody: "All",
-      selectedDates: "All",
+      selectedDates: "All Time",
       selectedViewN: 10,
       selectedOrderBy: "DESC"
     };
@@ -40,14 +40,14 @@ const MainComponent = {
         eventsArr = listWhereByParam(eventsArr, "body", "=", this.selectedBody);
       }
 
-      if (this.selectedDates != "All") {
+      if (this.selectedDates != "All Time") {
         let tempDate = new Date();
 
-        if (this.selectedDates == "One Week") {
+        if (this.selectedDates == "Past Week") {
           tempDate.setDate(tempDate.getDate() - 7);
-        } else if (this.selectedDates == "One Month") {
+        } else if (this.selectedDates == "Past Month") {
           tempDate.setMonth(tempDate.getMonth() - 1);
-        } else if (this.selectedDates == "Three Months") {
+        } else if (this.selectedDates == "Past Three Months") {
           tempDate.setMonth(tempDate.getMonth() - 3);
         } else {
           tempDate.setYear(tempDate.getFullYear() - 1);
@@ -94,26 +94,26 @@ const MainComponent = {
           <h3 class="section-label bold-text color-text-darkest">Recent Events:</h3>
 
           <div class="space-left-20px dropdown-container">
-            <h4 class="gapped-text display-inline-block">Allowed Bodies:</h4>
-            <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedBody">
+            <h4 class="gapped-text display-inline-block">Committee:</h4>
+            <select class="dropdown display-inline-block width-50-percent-max padding-right-10px gapped-text space-left-10px" v-model="selectedBody">
               <option v-for="body in dropdownBodies">{{body}}</option>
             </select>
           </div>
 
           <div class="space-left-20px dropdown-container">
-            <h4 class="gapped-text display-inline-block">Allowed Dates:</h4>
-            <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedDates">
-              <option>All</option>
-              <option>One Week</option>
-              <option>One Month</option>
-              <option>Three Months</option>
-              <option>One Year</option>
+            <h4 class="gapped-text display-inline-block">From:</h4>
+            <select class="dropdown display-inline-block width-50-percent-max padding-right-10px gapped-text space-left-10px" v-model="selectedDates">
+              <option>All Time</option>
+              <option>Past Week</option>
+              <option>Past Month</option>
+              <option>Past Three Months</option>
+              <option>Past Year</option>
             </select>
           </div>
 
           <div class="space-left-20px dropdown-container">
             <h4 class="gapped-text display-inline-block">View:</h4>
-            <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedViewN">
+            <select class="dropdown display-inline-block width-50-percent-max padding-right-10px gapped-text space-left-10px" v-model="selectedViewN">
               <option>10</option>
               <option>25</option>
               <option>50</option>
@@ -122,7 +122,7 @@ const MainComponent = {
 
           <div class="space-left-20px dropdown-container">
             <h4 class="gapped-text display-inline-block">Sort:</h4>
-            <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedOrderBy">
+            <select class="dropdown display-inline-block width-50-percent-max padding-right-10px gapped-text space-left-10px" v-model="selectedOrderBy">
               <option>DESC</option>
               <option>ASC</option>
             </select>
@@ -143,9 +143,12 @@ Vue.component("search-bar", {
     };
   },
   methods: {
+    splitSearch: function() {
+      return this.query.replace(' ', '+');
+    },
     handleSearch: function(e) {
       if (e.keyCode === 13) {
-        this.$router.push("search=" + this.query);
+        this.$router.push("search=" + this.splitSearch());
       }
     }
   },
@@ -202,11 +205,14 @@ Vue.component("event-card", {
       this.$router.push("event=" + this.naming);
     }
   },
+  //
+  // add this line into the template to view the search data
+  // <p v-for="(value, word) in searched" class="sub-text color-text-main space-left-10px space-right-10px">{{word}}: {{value}}</p>
+  //
   template: `
     <div v-on:click="routeToEventDetails" class="event-card border-1px-solid-main border-radius-5px height-160px-min drop-shadow-standard text-ellipsis transition-all-150">
       <h4 class="header-minor-text color-text-darker space-top-10px space-left-10px space-right-10px">{{body}}</h4>
       <p class="sub-text color-text-main space-left-10px space-right-10px space-bottom-10px border-bottom-1px-solid-main">{{displayDate}}</p>
-      <p v-for="(value, word) in searched" class="sub-text color-text-main space-left-10px space-right-10px">{{word}}: {{value}}</p>
       <p class="sub-text color-text-main space-all-10px">{{agenda}}</p>
     </div>`
 });
@@ -228,6 +234,8 @@ Vue.component("event-details", {
   props: ["event"],
   data: function() {
     return {
+      infoReady: false,
+      versioningReady: false,
       viewVersion: {},
       scrollDistanceFromTop: 0,
       editing: false,
@@ -295,7 +303,7 @@ Vue.component("event-details", {
         let hour = currentDatetime.getHours();
         let minutes = currentDatetime.getMinutes();
 
-        console.log("transcript update is different, storing");
+        console.log("Transcript update is different, storing");
 
         let naming = this.info.naming.split("_")[0];
 
@@ -319,6 +327,7 @@ Vue.component("event-details", {
         },
         readyCallback: function() {
           console.log("Data pull for", this.event, "info complete");
+          this.infoReady = true;
         }
       },
       versioning: {
@@ -328,6 +337,7 @@ Vue.component("event-details", {
         },
         readyCallback: function() {
           console.log("Data pull for", this.event, "versioning complete");
+          this.versioningReady = true;
         }
       }
     };
@@ -344,10 +354,13 @@ Vue.component("event-details", {
     },
     updatedDate: function() {
       return this.createReadableDate(this.viewVersion.datetime);
+    },
+    dataReady: function() {
+      return (this.infoReady && this.versioningReady);
     }
   },
   template: `
-    <div>
+    <div v-if="dataReady">
       <div id="event-header" class="flex flex-row align-center justify-between width-100-percent border-bottom-2px-solid-darkest space-bottom-40px">
         <h3 class="section-label bold-text color-text-darkest">{{info.body}}</h3>
         <p class="sub-label color-text-main space-left-10px space-right-10px">{{displayDate}}</p>
@@ -367,7 +380,7 @@ Vue.component("event-details", {
       <div id="event-content" class="width-100-percent">
         <div class="flex flex-row align-center justify-start width-100-percent border-bottom-2px-solid-darkest space-bottom-20px">
           <h4 class="header-minor-text bold-text color-text-darkest">Transcript:</h4>
-          <select v-if="!editing" class="dropdown gapped-text space-left-10px space-right-10px" v-model="viewVersion">
+          <select v-if="!editing" class="dropdown gapped-text space-left-10px padding-right-10px space-right-10px" v-model="viewVersion">
             <option v-for="version in displayVersioning" v-bind:value="version" class="dropdown-item">
               {{version.version_shortname}}
             </option>
@@ -393,7 +406,8 @@ Vue.component("event-details", {
           </transition>
         </div>
       </div>
-    </div>`
+    </div>
+    <div v-else class="load-dots"></div>`
 });
 
 const SearchComponent = {
@@ -403,11 +417,14 @@ const SearchComponent = {
       eventsAreLoaded: false,
       tfidfIsLoaded: false,
       selectedBody: "All",
-      selectedDates: "All",
+      selectedDates: "All Time",
       selectedViewN: 10
     };
   },
   computed: {
+    trueSearch: function() {
+      return this.query.replace('+', ' ')
+    },
     dataIsLoaded: function() {
       return (this.eventsAreLoaded && this.tfidfIsLoaded);
     },
@@ -415,7 +432,7 @@ const SearchComponent = {
       let editDistance = true;
       let adjustedDistanceStop = 0.26;
 
-      let splitSearch = this.query.split(' ');
+      let splitSearch = this.trueSearch.split(' ');
       let valuableSearch = [];
 
       for (let split in splitSearch) {
@@ -493,14 +510,14 @@ const SearchComponent = {
         eventsArr = listWhereByParam(eventsArr, "body", "=", this.selectedBody);
       }
 
-      if (this.selectedDates != "All") {
+      if (this.selectedDates != "All Time") {
         let tempDate = new Date();
 
-        if (this.selectedDates == "One Week") {
+        if (this.selectedDates == "Past Week") {
           tempDate.setDate(tempDate.getDate() - 7);
-        } else if (this.selectedDates == "One Month") {
+        } else if (this.selectedDates == "Past Month") {
           tempDate.setMonth(tempDate.getMonth() - 1);
-        } else if (this.selectedDates == "Three Months") {
+        } else if (this.selectedDates == "Past Three Months") {
           tempDate.setMonth(tempDate.getMonth() - 3);
         } else {
           tempDate.setYear(tempDate.getFullYear() - 1);
@@ -554,30 +571,32 @@ const SearchComponent = {
       <div id="enter-content" class="width-60-percent">
         <search-bar></search-bar>
 
-        <div class="flex flex-row flex-wrap align-center justify-start width-100-percent border-bottom-2px-solid-darkest space-bottom-40px">
-          <h3 class="section-label bold-text color-text-darkest space-right-40px">Found Meetings for: {{query}}</h3>
+        <div class="width-100-percent space-bottom-10px">
+          <h3 class="section-label bold-text color-text-darkest">Found Meetings for: {{trueSearch}}</h3>
+        </div>
 
-          <div class="space-left-20px dropdown-container">
-            <h4 class="gapped-text display-inline-block">Allowed Bodies:</h4>
-            <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedBody">
+        <div class="flex flex-row flex-wrap align-center justify-start width-100-percent border-bottom-2px-solid-darkest padding-bottom-10px space-bottom-40px">
+          <div class="dropdown-container">
+            <h4 class="gapped-text display-inline-block">Committee:</h4>
+            <select class="dropdown display-inline-block width-50-percent-max padding-right-10px gapped-text space-left-10px" v-model="selectedBody">
               <option v-for="body in dropdownBodies">{{body}}</option>
             </select>
           </div>
 
           <div class="space-left-20px dropdown-container">
-            <h4 class="gapped-text display-inline-block">Allowed Dates:</h4>
-            <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedDates">
-              <option>All</option>
-              <option>One Week</option>
-              <option>One Month</option>
-              <option>Three Months</option>
-              <option>One Year</option>
+            <h4 class="gapped-text display-inline-block">From:</h4>
+            <select class="dropdown display-inline-block width-50-percent-max padding-right-10px gapped-text space-left-10px" v-model="selectedDates">
+              <option>All Time</option>
+              <option>Past Week</option>
+              <option>Past Month</option>
+              <option>Past Three Months</option>
+              <option>Past Year</option>
             </select>
           </div>
 
           <div class="space-left-20px dropdown-container">
             <h4 class="gapped-text display-inline-block">View:</h4>
-            <select class="dropdown display-inline-block width-20-percent gapped-text space-left-10px" v-model="selectedViewN">
+            <select class="dropdown display-inline-block width-50-percent-max padding-right-10px gapped-text space-left-10px" v-model="selectedViewN">
               <option>10</option>
               <option>25</option>
               <option>50</option>
@@ -607,11 +626,15 @@ const routes = [
   },
   { path: "/event=:event",
     component: EventComponent,
-    props: true,
-    beforeEnter: function(to, from, next) {
-      // checkPathExists("/events/", to.params.event, to, from, next);
-      next();
-    }
+    props: true
+    // beforeEnter: function(to, from, next) {
+    //   if (checkPathExists("/events/", to.params.event)) {
+    //     next();
+    //   } else {
+    //     console.log('event doesnt exist');
+    //     this.$router.push('/');
+    //   }
+    // }
   },
   { path: "*",
     redirect: "/"

@@ -100,7 +100,7 @@
     width: 24%; } }
 @media only screen and (min-device-width: 1800px) {
   .dropdown-container {
-    width: 20%; } }
+    width: 18%; } }
 @media only screen and (min-device-width: 2224px) {
   .dropdown-container {
     width: 20%; } }
@@ -272,6 +272,13 @@
 .width-28-percent {
   width: 28%; }
 
+.width-50-percent {
+  width: 50%; }
+
+.width-50-percent-max {
+  width: auto;
+  max-width: 50%; }
+
 .width-60-percent {
   width: 60%; }
 
@@ -297,11 +304,17 @@
 .padding-left-20px {
   padding-left: 20px; }
 
+.padding-right-20px {
+  padding-right: 20px; }
+
 .padding-all-10px {
   padding: 10px; }
 
 .padding-all-20px {
   padding: 20px; }
+
+.padding-bottom-10px {
+  padding-bottom: 10px; }
 
 .padding-bottom-40px {
   padding-bottom: 40px; }
@@ -565,121 +578,141 @@
   transition: all 150ms ease-in-out; }
 
 .color-text-lightest {
-  color: #FFFFFF; }
+  color: #FFFFFF;
+  text-decoration-color: #FFFFFF; }
 
 .color-text-lightest-background {
   background-color: #FFFFFF; }
 
 .color-text-lighter {
-  color: #BDBDBD; }
+  color: #BDBDBD;
+  text-decoration-color: #BDBDBD; }
 
 .color-text-lighter-background {
   background-color: #BDBDBD; }
 
 .color-text-main {
-  color: #9E9E9E; }
+  color: #9E9E9E;
+  text-decoration-color: #9E9E9E; }
 
 .color-text-main-background {
   background-color: #9E9E9E; }
 
 .color-text-darker {
-  color: #757575; }
+  color: #757575;
+  text-decoration-color: #757575; }
 
 .color-text-darker-background {
   background-color: #757575; }
 
 .color-text-darkest {
-  color: #212121; }
+  color: #212121;
+  text-decoration-color: #212121; }
 
 .color-text-darkest-background {
   background-color: #212121; }
 
 .color-blue-lightest {
-  color: #9696FE; }
+  color: #9696FE;
+  text-decoration-color: #9696FE; }
 
 .color-blue-lightest-background {
   background-color: #9696FE; }
 
 .color-blue-lighter {
-  color: #6D6DFF; }
+  color: #6D6DFF;
+  text-decoration-color: #6D6DFF; }
 
 .color-blue-lighter-background {
   background-color: #6D6DFF; }
 
 .color-blue-main {
-  color: #4747FF; }
+  color: #4747FF;
+  text-decoration-color: #4747FF; }
 
 .color-blue-main-background {
   background-color: #4747FF; }
 
 .color-blue-darker {
-  color: #2121FF; }
+  color: #2121FF;
+  text-decoration-color: #2121FF; }
 
 .color-blue-darker-background {
   background-color: #2121FF; }
 
 .color-blue-darkest {
-  color: #0202FB; }
+  color: #0202FB;
+  text-decoration-color: #0202FB; }
 
 .color-blue-darkest-background {
   background-color: #0202FB; }
 
 .color-orange-lightest {
-  color: #FFCA84; }
+  color: #FFCA84;
+  text-decoration-color: #FFCA84; }
 
 .color-orange-lightest-background {
   background-color: #FFCA84; }
 
 .color-orange-lighter {
-  color: #FFB553; }
+  color: #FFB553;
+  text-decoration-color: #FFB553; }
 
 .color-orange-lighter-background {
   background-color: #FFB553; }
 
 .color-orange-main {
-  color: #FFA327; }
+  color: #FFA327;
+  text-decoration-color: #FFA327; }
 
 .color-orange-main-background {
   background-color: #FFA327; }
 
 .color-orange-darker {
-  color: #FF9200; }
+  color: #FF9200;
+  text-decoration-color: #FF9200; }
 
 .color-orange-darker-background {
   background-color: #FF9200; }
 
 .color-orange-darkest {
-  color: #FF9200; }
+  color: #FF9200;
+  text-decoration-color: #FF9200; }
 
 .color-orange-darkest-background {
   background-color: #FF9200; }
 
 .color-mint-lightest {
-  color: #83FEC9; }
+  color: #83FEC9;
+  text-decoration-color: #83FEC9; }
 
 .color-mint-lightest-background {
   background-color: #83FEC9; }
 
 .color-mint-lighter {
-  color: #53FFB5; }
+  color: #53FFB5;
+  text-decoration-color: #53FFB5; }
 
 .color-mint-lighter-background {
   background-color: #53FFB5; }
 
 .color-mint-main {
-  color: #27FFA2; }
+  color: #27FFA2;
+  text-decoration-color: #27FFA2; }
 
 .color-mint-main-background {
   background-color: #27FFA2; }
 
 .color-mint-darker {
-  color: #00FF92; }
+  color: #00FF92;
+  text-decoration-color: #00FF92; }
 
 .color-mint-darker-background {
   background-color: #00FF92; }
 
 .color-mint-darkest {
-  color: #00FB8F; }
+  color: #00FB8F;
+  text-decoration-color: #00FB8F; }
 
 .color-mint-darkest-background {
   background-color: #00FB8F; }

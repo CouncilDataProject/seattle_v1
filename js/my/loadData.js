@@ -112,11 +112,11 @@ function leven_distance(a, b) {
   return dd;
 };
 
-function checkPathExists(pathHead, pathKey, to, from, next) {
+function checkPathExists(pathHead, pathKey) {
   if (firebaseDB.ref(pathHead + pathKey + "/").once("value").then(function(snapshot) { return snapshot.exists(); })) {
-    next();
+    return true;
   } else {
-    next(false);
+    return false;
   }
 };
 
