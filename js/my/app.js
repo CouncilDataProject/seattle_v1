@@ -157,7 +157,7 @@ Vue.component("search-bar", {
 });
 
 Vue.component("event-cards-container", {
-  props: ["displayData", "viewN"],
+  props: ["displayData", "viewN", "showSearched"],
   computed: {
     slicedData: function() {
       // let determined = Math.floor(this.$el.clientWidth / (this.$el.clientWidth / 3)) * 2;
@@ -179,6 +179,7 @@ Vue.component("event-cards-container", {
           v-bind:datetime="object.datetime"
           v-bind:agenda="object.agenda"
           v-bind:searched="object.searched"
+          v-bind:showSearched="showSearched"
           v-bind:key="object.naming"
         ></event-card>
       </div>
@@ -186,7 +187,7 @@ Vue.component("event-cards-container", {
 });
 
 Vue.component("event-card", {
-  props: ["naming", "body", "datetime", "agenda", "searched"],
+  props: ["naming", "body", "datetime", "agenda", "searched", "showSearched"],
   computed: {
     displayDate: function() {
       let readDate = new Date(this.datetime);
@@ -205,14 +206,11 @@ Vue.component("event-card", {
       this.$router.push("event=" + this.naming);
     }
   },
-  //
-  // add this line into the template to view the search data
-  // <p v-for="(value, word) in searched" class="sub-text color-text-main space-left-10px space-right-10px">{{word}}: {{value}}</p>
-  //
   template: `
     <div v-on:click="routeToEventDetails" class="event-card border-1px-solid-main border-radius-5px height-160px-min drop-shadow-standard text-ellipsis transition-all-150">
       <h4 class="header-minor-text color-text-darker space-top-10px space-left-10px space-right-10px">{{body}}</h4>
       <p class="sub-text color-text-main space-left-10px space-right-10px space-bottom-10px border-bottom-1px-solid-main">{{displayDate}}</p>
+      <p v-if="showSearched" v-for="(value, word) in searched" class="sub-text color-text-main space-left-10px space-right-10px">{{word}}: {{value}}</p>
       <p class="sub-text color-text-main space-all-10px">{{agenda}}</p>
     </div>`
 });
@@ -418,7 +416,8 @@ const SearchComponent = {
       tfidfIsLoaded: false,
       selectedBody: "All",
       selectedDates: "All Time",
-      selectedViewN: 10
+      selectedViewN: 10,
+      showSearched: false
     };
   },
   computed: {
@@ -603,9 +602,14 @@ const SearchComponent = {
             </select>
           </div>
 
+          <div class="space-left-20px dropdown-container">
+            <h4 class="gapped-text display-inline-block">Show Search Details:</h4>
+            <input class="gapped-text space-left-10px" type="checkbox" v-model="showSearched">
+          </div>
+
         </div>
 
-        <div v-if="dataIsLoaded" class="width-100-percent"><event-cards-container v-if="eventsAreLoaded" v-bind:displayData="toViewEvents" v-bind:viewN="selectedViewN"></event-cards-container></div>
+        <div v-if="dataIsLoaded" class="width-100-percent"><event-cards-container v-if="eventsAreLoaded" v-bind:displayData="toViewEvents" v-bind:viewN="selectedViewN" v-bind:showSearched="showSearched"></event-cards-container></div>
         <div v-else class="load-dots"></div>
       </div>
     </div>`
