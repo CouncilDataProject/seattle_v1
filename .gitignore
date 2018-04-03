@@ -1,4 +1,13 @@
-
+# generated directories
+.ipynb_checkpoints/
 .sass-cache/
 
+# generated files
 master.css.map
+.DS_Store
+
+# specified directories
+events_over_time/
+
+# specified files
+db.json
